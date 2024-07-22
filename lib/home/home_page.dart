@@ -8,19 +8,62 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+List<String> suroolor = [
+  'Кыргызстанда 7 область  бар',
+  'Кыргызстанда 60 район  бар',
+  'Озбекстан Кыргызстан менен чектешпейт',
+];
+
 class _HomePageState extends State<HomePage> {
-  List<int> sandar = [9, 45, 32, 34, 32, 21, 11, 3];
-
-  List<String> adamdynAttary = ['Manas', 'Semetey', 'Seytek'];
-
   List<Widget> icons = [];
-  bool ochukJanyk = false;
-  void checkIcon() {
+
+  int katarNomer = 0;
+  List<SurooJoop> surooJoop = [
+    SurooJoop(
+      suroo: 'Кыргызстанда 7 область  бар',
+      joop: true,
+    ),
+    SurooJoop(
+      suroo: 'Кыргызстанда 60 район  бар',
+      joop: false,
+    ),
+    SurooJoop(
+      suroo: 'Озбекстан Кыргызстан менен чектешпейт',
+      joop: false,
+    ),
+  ];
+
+  void otkoz() {
     setState(() {});
-    icons.add(ChoiceIcon(
-      icon: Icons.check,
-      color: Colors.red,
-    ));
+    katarNomer = katarNomer + 1;
+  }
+
+  suroonuTeksher() {
+    if (katarNomer > surooJoop[katarNomer].suroo.length) {
+      'Suroo tugondu';
+    }
+  }
+
+  surooJooptuTeksher(bool koldonuuchununJoobu) {
+    final programistinjoobu = surooJoop[katarNomer].joop;
+    if (koldonuuchununJoobu == programistinjoobu) {
+      icons.add(Icon(
+        Icons.check,
+        color: Colors.green,
+        size: 60,
+      ));
+    } else if (koldonuuchununJoobu != programistinjoobu) {
+      icons.add(Icon(
+        Icons.close,
+        color: Colors.red,
+        size: 60,
+      ));
+    }
+    if (surooJoop[katarNomer].suroo == 'Suroo tugondu') {
+      katarNomer--;
+    }
+    otkoz();
+    setState(() {});
   }
 
   @override
@@ -31,27 +74,9 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ChoiceButtonWidget(
-              onTap: () {
-                checkIcon();
-              },
-              text: 'Defr',
-              color: Colors.green,
-            ),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    ochukJanyk = !ochukJanyk;
-                  });
-                },
-                icon: Icon(
-                  Icons.favorite,
-                  size: 70,
-                  color: ochukJanyk == true ? Colors.red : Colors.grey,
-                )),
             Center(
               child: Text(
-                'Кыргызстанда 7 область  бар',
+                surooJoop[katarNomer].suroo,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
                   fontSize: 32,
@@ -64,7 +89,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 ChoiceButtonWidget(
                   onTap: () {
-                    checkIcon();
+                    surooJooptuTeksher(true);
                   },
                   text: 'Туура',
                   color: Colors.red,
@@ -72,9 +97,9 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 20),
                 ChoiceButtonWidget(
                   onTap: () {
-                    checkIcon();
+                    surooJooptuTeksher(false);
                   },
-                  text: 'wdewfrgt',
+                  text: 'Туура эмес',
                   color: Colors.teal,
                 ),
               ],
@@ -143,4 +168,33 @@ class ChoiceButtonWidget extends StatelessWidget {
       color: Colors.orange,
     );
   }
+}
+
+class Toyota {
+  final String camry; // 2
+  final String corolla; // 10
+  final String ist; // 5
+
+  Toyota({
+    required this.camry,
+    required this.corolla,
+    required this.ist,
+  });
+}
+
+class Camry {
+  final int orun;
+  final String jurumu;
+
+  Camry({required this.orun, required this.jurumu});
+}
+
+class SurooJoop {
+  final String suroo;
+  final bool joop;
+
+  SurooJoop({
+    required this.suroo,
+    required this.joop,
+  });
 }
