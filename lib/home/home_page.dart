@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,16 +9,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-List<String> suroolor = [
-  'Кыргызстанда 7 область  бар',
-  'Кыргызстанда 60 район  бар',
-  'Озбекстан Кыргызстан менен чектешпейт',
-];
-
 class _HomePageState extends State<HomePage> {
   List<Widget> icons = [];
-
-  int katarNomer = 0;
+  bool buutubu = false;
+  int index = 0;
   List<SurooJoop> surooJoop = [
     SurooJoop(
       suroo: 'Кыргызстанда 7 область  бар',
@@ -33,36 +28,40 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  void otkoz() {
-    setState(() {});
-    katarNomer = katarNomer + 1;
-  }
-
-  suroonuTeksher() {
-    if (katarNomer > surooJoop[katarNomer].suroo.length) {
-      'Suroo tugondu';
+  String getQuestion() {
+    if (index < surooJoop.length - 1) {
+      return surooJoop[index].suroo;
+    } else {
+      return '';
     }
   }
 
-  surooJooptuTeksher(bool koldonuuchununJoobu) {
-    final programistinjoobu = surooJoop[katarNomer].joop;
+  bool getAnswer() {
+    if (index < surooJoop.length) {
+      return surooJoop[index].joop;
+    }
+    return false;
+  }
+
+  void surooJooptuTeksher(bool koldonuuchununJoobu) {
+    final programistinjoobu = getAnswer();
     if (koldonuuchununJoobu == programistinjoobu) {
-      icons.add(Icon(
+      icons.add(const Icon(
         Icons.check,
         color: Colors.green,
         size: 60,
       ));
     } else if (koldonuuchununJoobu != programistinjoobu) {
-      icons.add(Icon(
+      icons.add(const Icon(
         Icons.close,
         color: Colors.red,
         size: 60,
       ));
     }
-    if (surooJoop[katarNomer].suroo == 'Suroo tugondu') {
-      katarNomer--;
+    if (getQuestion() == '') {
+      buutubu = true;
     }
-    otkoz();
+    index++;
     setState(() {});
   }
 
@@ -75,15 +74,39 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Center(
-              child: Text(
-                surooJoop[katarNomer].suroo,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.roboto(
-                  fontSize: 32,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              child: buutubu == true
+                  ?
+                  // Container(
+                  //     height: 20,
+                  //     width: 200,
+                  //     color: Colors.red,
+                  //     child: const Text('Buttu!'),
+                  //   )
+
+                  AlertDialog(
+                      title: Text('Suroo buttu'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            buutubu = false;
+                            index = 0;
+                            getQuestion();
+                            icons = [];
+                            setState(() {});
+                          },
+                          child: Text('Kaira bashta!'),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      surooJoop[index].suroo,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        fontSize: 32,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
             ),
             Column(
               children: [
